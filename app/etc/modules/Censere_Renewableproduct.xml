@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Censere_Renewableproduct>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Censere_Renewableproduct>
+        <depends>
+            <Mage_Sales/>
+            <Mage_CatalogInventory/>
+            <Mage_Checkout/>
+        </depends>
+    </modules>
+</config>

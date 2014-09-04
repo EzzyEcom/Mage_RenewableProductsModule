@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Censere_Renewableproduct>
+            <version>0.1.14</version>
+        </Censere_Renewableproduct>
+    </modules>
+    <global>
+
+        <events>
+            <checkout_cart_save_after>
+                <observers>
+                    <sales_quote_save_after_renewableprod>
+                        <class>Censere_Renewableproduct_Model_Observer</class>
+                        <method>saveRenewableProducttoQuote</method>
+                    </sales_quote_save_after_renewableprod>
+                </observers>
+            </checkout_cart_save_after>
+        </events>
+        <fieldsets>
+            <sales_convert_quote>
+                <renewing_realorderid><to_order>*</to_order></renewing_realorderid>
+                <previous_reprodorder_number><to_order>*</to_order></previous_reprodorder_number>
+            </sales_convert_quote>
+            <sales_convert_quote_item>
+                <renewing_realorderqtyrenewable><to_order_item>*</to_order_item></renewing_realorderqtyrenewable>
+                <renewing_realorderid><to_order_item>*</to_order_item></renewing_realorderid>
+                <renewing_renewingstate><to_order_item>*</to_order_item></renewing_renewingstate>
+                <prodid_renewed><to_order_item>*</to_order_item></prodid_renewed>
+            </sales_convert_quote_item>
+        </fieldsets>
+
+
+        <resources>
+            <renewableprod_setup>
+                <setup>
+                    <module>Censere_Renewableproduct</module>
+                </setup>
+            </renewableprod_setup>
+        </resources>
+        <models>
+            <renewableprod>
+                <class>Censere_Renewableproduct_Model</class>
+                <resourceModel>renewableprod_resource</resourceModel>
+            </renewableprod>
+
+            <renewableprod_resource>
+                <class>Censere_Renewableproduct_Model_Resource</class>
+                <entities>
+                    <renewableprod_table>
+                        <table>renewable_products</table>
+                    </renewableprod_table>
+                </entities>
+            </renewableprod_resource>
+        </models>
+
+        <blocks>
+            <renewableprod>
+                <class>Censere_Renewableproduct_Block</class>
+            </renewableprod>
+        </blocks>
+
+        <helpers>
+            <renewableprod>
+                <class>Censere_Renewableproduct_Helper</class>
+            </renewableprod>
+        </helpers>
+
+    </global>
+
+    <admin>
+        <routers>
+            <renewableprod>
+                <use>admin</use>
+                <args>
+                    <module>Censere_Renewableproduct</module>
+                    <frontName>renewableprod</frontName>
+                </args>
+            </renewableprod>
+            <renewableprodfilter>
+                <use>admin</use>
+                <args>
+                    <module>Censere_Renewableproduct</module>
+                    <frontName>renewableprodfilter</frontName>
+                </args>
+            </renewableprodfilter>
+        </routers>
+    </admin>
+    <adminhtml>
+        <menu>
+            <renewableprod module="renewableprod">
+                <title>Renewables</title>
+                <sort_order>100</sort_order>
+                <children>
+                    <renewableprod module="renewableprod">
+                        <title>Renewable Product List</title>
+                        <sort_order>0</sort_order>
+                        <action>renewableprod/adminhtml_renewableprodlist</action>
+                    </renewableprod>
+                </children>
+            </renewableprod>
+        </menu>
+
+        <layout>
+            <updates>
+                <renewableprod>
+                    <file>renewableproducts.xml</file>
+                </renewableprod>
+            </updates>
+        </layout>
+
+    </adminhtml>
+
+
+    <frontend>
+
+        <layout>
+            <updates>
+                <renewableprod>
+                    <file>censere/renewableprods.xml</file>
+                </renewableprod>
+            </updates>
+        </layout>
+
+        <routers>
+            <renewableprod>
+                <use>standard</use>
+                <args>
+                    <module>Censere_Renewableproduct</module>
+                    <frontName>renewableprods</frontName>
+                </args>
+            </renewableprod>
+        </routers>
+        <secure_url>
+            <renewableprod>/renewableprod</renewableprod>
+        </secure_url>
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <save_checkout_renewableprod>
+                        <class>Censere_Renewableproduct_Model_Observer</class>
+                        <method>saveCheckoutRenewableProds</method>
+                    </save_checkout_renewableprod>
+                </observers>
+            </sales_order_place_after>
+
+        </events>
+    </frontend>
+</config>

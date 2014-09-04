@@ -1,0 +1,158 @@
+<?php
+/**
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2015 Grupo Censere
+ * @Author      Saulo Ferreira
+ * @Date        04/03/2014
+ */
+
+?>
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php //$_renewableproducteditable = $this->getRenewableProdEdit(); ?>
+<div class="box">
+    <!--    --><?php //Mage::log('transid: '. $_renewableproducteditable->/*these are the actual table fields ->*/ getRealOrderId()) ?>
+    <div class="entry-edit">
+
+        <div class="entry-edit">
+
+
+            <div class="page-title">
+                <h1><?php echo 'Renewable Product - Edit Owner and Others' ?></h1>
+            </div>
+            <?php
+            $request = $this->getRequest();
+            $renewableproductlistedit = Mage::getModel('renewableprod/product')
+                ->getCollection()
+                ->addFieldToSelect('*')
+                ->addFieldToFilter('real_order_id', $request->getParam('transidedit'))
+                ->setOrder('real_order_id', 'asc')
+                ->load();
+
+            ?>
+
+            <?php foreach ($renewableproductlistedit as $_renewableedit) {?>
+
+            <form action="<?php echo Mage::getStoreConfig(Mage_Core_Model_Store::XML_PATH_SECURE_BASE_URL).'renewableprod/index/renewableprodeditedfields'?>" id="contactForm" method="get" >
+                <div class="fieldset ">
+
+                    <ul class="form-list  data-contact">
+                        <li class="fields">
+
+                            <div class="h65">
+                                <div class="field">
+                                    <label for="transidview"><?php echo $this->__('Transaction#') ?></label>
+                                    <div class="input-box">
+                                        <input name="transid" id="transid" value="<?php echo $_renewableedit->/*these are the actual table fields ->*/ getRealOrderId() ?>" type="hidden"/>
+                                        <input style="width: 75%;" name="transidview" id="transidview" title="<?php echo $this->__('Transaction#') ?>" value="<?php echo $_renewableedit->/*these are the actual table fields ->*/ getRealOrderId() ?>" type="text" disabled/>
+                                        <?php Mage::log('transid: '. $_renewableedit->/*these are the actual table fields ->*/ getRealOrderId()) ?>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label for="orderidview"><?php echo $this->__('Order#') ?></label>
+                                    <div class="input-box">
+                                        <input name="orderid" id="orderid" value="<?php echo $_renewableedit->/*these are the actual table fields ->*/ getActualOrderNumber() ?>" type="hidden"/>
+                                        <input style="width: 75%;" name="orderidview" id="orderidview" title="<?php echo $this->__('Order#') ?>" value="<?php echo $_renewableedit->/*these are the actual table fields ->*/ getActualOrderNumber() ?>" type="text" disabled/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h65">
+                                <div class="field">
+                                    <label for="custid"><?php echo $this->__('Customer ID#') ?></label>
+                                    <div class="input-box">
+                                        <input style="width: 75%;" name="custid" id="custid" title="<?php echo $this->__('Customer ID#') ?>" value="<?php echo $_renewableedit->/*these are the actual table fields ->*/ getRealCustId() ?>" class="input-text" type="text" />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="input-box">
+                                        <input style="width: 75%;" name="oldcustid" id="oldcustid" value="<?php echo $_renewableedit->/*these are the actual table fields ->*/ getRealCustId() ?>" class="input-text" type="hidden" />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="custname"><em>*</em><?php echo $this->__('Customer Name') ?></label>
+                                    <div class="input-box">
+                                        <input style="width: 75%;" name="custname" id="custname" title="<?php echo $this->__('Customer Name') ?>" value="<?php echo $_renewableedit->/*these are the actual table fields ->*/ getCustName() ?>" class="input-text required-entry" type="text" />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="custemail"><em>*</em><?php echo $this->__('Customer Email') ?></label>
+                                    <div class="input-box">
+                                        <input style="width: 75%;" name="custemail" id="custemail" title="<?php echo $this->__('Customer Email') ?>" value="<?php echo $_renewableedit->/*these are the actual table fields ->*/ getCustEmail() ?>" class="input-text required-entry" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h65">
+                                <div class="field">
+                                    <label for="prodid"><?php echo $this->__('Product ID#') ?></label>
+                                    <div class="input-box">
+                                        <input style="width: 75%;" name="prodid" id="prodid" title="<?php echo $this->__('Product ID#') ?>" value="<?php echo $_renewableedit-> /*these are the actual table fields ->*/ getProdId() ?>" type="text" />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="prodname"><?php echo $this->__('Product Name') ?></label>
+                                    <div class="input-box">
+                                        <input style="width: 75%;" name="prodname" id="prodname" title="<?php echo $this->__('Product Name') ?>" value="<?php echo $_renewableedit-> /*these are the actual table fields ->*/ getRealProdName() ? $this->htmlEscape($_renewableedit-> /*these are the actual table fields ->*/ getRealProdName()) : '&nbsp;' ?>" type="text" />
+                                    </div>
+                                </div>
+
+                                <!--                                //////////-->
+
+                                <div class="field">
+                                    <label for="prodkey"><?php echo $this->__('Product Key#') ?></label>
+                                    <div class="input-box">
+                                        <input style="width: 75%;" name="prodkey" id="prodkey" title="<?php echo $this->__('Product Key#') ?>" value="<?php echo $_renewableedit-> /*these are the actual table fields ->*/ getProdKey() ?>" type="text" />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="renewaldate"><?php echo $this->__('Next Renewal Date') ?></label>
+                                    <div class="input-box">
+                                        <input style="width: 75%;" name="renewaldate" id="renewaldate" title="<?php echo $this->__('Next Renewal Date') ?>" value="<?php echo $_renewableedit->getRenewalDate() ?>" type="text" />
+                                    </div>
+
+                                </div>
+                                <!--                                <div class="field">-->
+                                <!--                                    <label for="prodkey">--><?php //echo $this->__('Prod.Key#') ?><!--</label>-->
+                                <!--                                    <div class="input-box">-->
+                                <!--                                        <input name="prodkey" id="prodkey" title="--><?php //echo $this->__('Prod.Key#') ?><!--" value="--><?php //echo $_renewablelist-> /*these are the actual table fields ->*/ getProdKey() ?><!--" type="text" />-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
+                                <!--                                <div class="field">-->
+                                <!--                                    <label for="prodkey">--><?php //echo $this->__('Prod.Key#') ?><!--</label>-->
+                                <!--                                    <div class="input-box">-->
+                                <!--                                        <input name="prodkey" id="prodkey" title="--><?php //echo $this->__('Prod.Key#') ?><!--" value="--><?php //echo $_renewablelist-> /*these are the actual table fields ->*/ getProdKey() ?><!--" type="text" />-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
+
+                            </div>
+                        </li>
+                        <li>
+                            <label for="comment" class="required"><em>*</em><?php echo $this->__('Reason') ?></label>
+                            <div>
+                                <textarea style="width: 75%;" name="comment" id="comment" title="<?php echo $this->__('Reason') ?>" class="required-entry input-text" cols="5" rows="3"></textarea>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <?php } ?>
+                <div class="buttons-set">
+
+                    <input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+                    <button type="submit" title="<?php echo $this->__('Submit Changes') ?>" class="button"><span><span><?php echo $this->__('Submit Changes') ?></span></span></button><p class="required"><?php echo $this->__('* Required Fields') ?></p>
+                </div>
+            </form>
+
+            <div class="buttons-set">
+
+                <a style="text-decoration: none; color: #ffffff; background-color: orange; padding:5px;" href="<?php echo Mage::getStoreConfig(Mage_Core_Model_Store::XML_PATH_SECURE_BASE_URL) . 'renewableprod/adminhtml_renewableprodlist/' ?>" title="<?php echo $this->__('Go Back') ?>" class="button"><?php echo $this->__('Go Back') ?></a>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        var contactForm = new VarienForm('contactForm', true);
+        //]]>
+    </script>

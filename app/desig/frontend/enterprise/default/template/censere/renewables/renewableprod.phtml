@@ -1,0 +1,178 @@
+<?php
+/**
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2015 Grupo Censere
+ * @Author      Saulo Ferreira
+ * @Date        04/03/2014
+ */
+
+?>
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php $_renewableproductlist = $this->getRenewablesList(); ?>
+<div class="buttons-set f-left">
+    <p class="back-link">
+        <a href="<?php echo Mage::getBaseUrl()?>/customer/account/"><small>&laquo;</small><?php echo $this->__('Back to Account Summary');?></a>
+    </p>
+</div><br><br>
+<div class="page-title">
+    <h1><?php echo 'Renewables List' ?></h1>
+</div>
+
+<?php echo $this->getPagerHtml1(); ?>
+
+<?php if($_renewableproductlist->getSize()): ?>
+<table class="data-table" id="my-orders-table">
+    <col width="1" />
+    <col width="1" />
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <tbody>
+    <?php $_odd = ''; ?>
+        <?php foreach ($_renewableproductlist as $_renewablelist) { if ($_renewablelist->getActivestatefield() > 0){?>
+            <?php
+                    $alert_yellow = 120;
+                    $alert_orange = 60;
+                    $alert_red = 30;
+                    $minimumdatevalueprior = 60;
+                    $fixeddate = strtotime(date('Y-m-d'));
+                    $datetoexpire = strtotime($_renewablelist->getRenewalDate());
+                    $dateresult = $datetoexpire - $fixeddate;
+                    $days_remaining = floor($dateresult / 86400);
+                    //                                $hours_remaining = floor(($dateresult % 86400) / 3600);
+                    Mage::log('This is the fixeddate: '.$fixeddate.'  This is the datetoexpire: '.$datetoexpire.'  This is the result from the Fixeddate - daystoexpire: '.$days_remaining.' Date to Subtract:'.$dateresult);
+            ?>
+            <?php
+                    $renewableprodid = $_renewablelist->getProdId();
+                    $renewableproductcollection = Mage::getModel('catalog/product')->load($renewableprodid);
+                    $renewable_product = $renewableproductcollection;
+            ?>
+         <thead>
+                <tr>
+                    <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Trans#') ?></th>
+                    <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Order#') ?></th>
+                    <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Cust.ID#') ?></th>
+                    <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Cust.Name') ?></th>
+                    <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Prod.ID#') ?></th>
+                    <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Prod.Name') ?></th>
+                    <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Prod.Key#') ?></th>
+                </tr>
+         </thead>
+                <tr>
+                    <td><?php echo $_renewablelist->/*these are the actual table fields ->*/ getRealOrderId() ?></td>
+                    <td><?php echo $_renewablelist->/*these are the actual table fields ->*/ getActualOrderNumber() ?></td>
+                    <td><?php echo $_renewablelist->/*these are the actual table fields ->*/ getRealCustId() ?></td>
+                    <td><?php echo $_renewablelist->/*these are the actual table fields ->*/ getCustName() ?></span></td>
+                    <td><?php echo $_renewablelist-> /*these are the actual table fields ->*/ getProdId() ?></td>
+                    <td><?php echo $_renewablelist-> /*these are the actual table fields ->*/ getRealProdName() ? $this->htmlEscape($_renewablelist-> /*these are the actual table fields ->*/ getRealProdName()) : '&nbsp;' ?></td>
+                    <td><?php echo $_renewablelist-> /*these are the actual table fields ->*/ getProdKey() ?></td>
+                </tr>
+
+        <tr style="background-color:#fcfcfc; ">
+            <th>&nbsp;</th>
+            <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Frequency') ?></th>
+            <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Renewal Date') ?></th>
+<!--            <th style="color: #000000; font-weight: bold;">--><?php //echo $this->__('Modif.By') ?><!--</span></th>-->
+            <th style="color: #000000; font-weight: bold;"><?php echo $this->__('L.D.M.') ?></span></th>
+            <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Days Left') ?></th>
+            <th style="color: #000000; font-weight: bold;"><?php echo $this->__('Renewal Button') ?></span></th>
+        </tr>
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td><?php echo $_renewablelist->/*these are the actual table fields ->*/ getRenewedTimes() ?><?php echo $this->__(' Time(s)');?></td>
+                    <td><em><?php if ($_renewablelist->getRenewalDate() != '0000-00-00'){
+                            /*
+                             * This displays Renewal Date in the Client's Required Format i.e. = 01-Jan-2000
+                             * */
+                               echo date('d-M-Y', strtotime($_renewablelist->getRenewalDate()));
+                            /*
+                             * end
+                             * */
+                            }else{ ?><div style="color: #FF0000; text-align:center; "><strong><?php echo $this->__('Renewal Date yet to be Assigned');?></strong></div><?php }?></em>
+                        <div class="link-reorder tiptip" style="color:#000000; display:inline; border-radius:2px; padding:3px 10px 3px 10px; background-color:
+                            <?php
+                            if($days_remaining >= $alert_yellow){
+                                Mage::log('Color '.$days_remaining);
+                                echo $this->__('#009900;" title="Good"');
+                            }else if($days_remaining <= $alert_yellow && $days_remaining >= $alert_orange){
+                                echo $this->__('#FFFF00;" title="Moderate"');
+                            }else if($days_remaining <= $alert_orange && $days_remaining >= $alert_red){
+                                echo $this->__('#FF9900;" title="Needs Attention"');
+                            }else if($days_remaining <= $alert_red && $_renewablelist->getRenewalDate() != '0000-00-00' && $days_remaining != $alert_orange && $days_remaining != $alert_yellow){
+                                echo $this->__('#FF3300;" title="Renewal Needed / Has been Deactivated"');
+                            }else{ echo 'none;"';}?>>
+                        </div>
+                    </td>
+<!--                    <td>--><?php //echo $_renewablelist->/*these are the actual table fields ->*/ getModifiedbyName() ?><!--</span></td>-->
+                    <td><?php echo $this->formatDate($_renewablelist->/*these are the actual table fields ->*/ getLastDateModified(), 'medium', false); ?></td>
+                    <td class="a-center"><?php if($_renewablelist->getRenewalDate() != '0000-00-00'){?>
+                        <b style="color: #FF0000; font-size: 14pt;"><?php echo $days_remaining; ?></b></td>
+                        <?php }else{ ?><div style="color: #FF0000; text-align:center; "><strong><?php echo $this->__('Days Unavailable');?></strong></div>
+                        <?php      } ?>
+                        <td class="a-center">
+                                  <?php if($days_remaining < $minimumdatevalueprior && $_renewablelist->getRenewalDate() != '0000-00-00' && $_renewablelist->getProdKey() != ''){
+                                    ?><?php $renewableconcaturl = 'renewableprod-renewing-'; $_renewableconcaturl = Mage::getBaseUrl();?>
+                                      <?php
+                                              /*
+                                               * This creates the renewable prod validation cookie in order to restrict product view
+                                               * */
+                                              $_renewingstatename   = 'renewingstatevalidator';
+                                              $_renewingstatevalue  = 'YesAndActive...';
+                                              $_renewingstateperiod  = 120;
+
+                                              Mage::getModel('core/cookie')->set($_renewingstatename, $_renewingstatevalue, $_renewingstateperiod);
+                                      ?>
+                                      <div class="icons-orders">
+                                            <span class="nobr">
+                                                <?php
+                                                /*
+                                                 * Here Start the HASH/Encryption Descriptor Key in order to secure Renewable Product Url from being exploited
+                                                 * */
+                                                $ihash = array('1T4h5i2s8I3s8A5v8e1r5y7L6o3n8g2A2n3d5S8e9c6u9r3e8d7S2t2r0i0n2g1I1n7T1o8A2v5o2i3d6U5r7l5A8b9u0s2e2Pr1o4v8i2e2d0A66n5d5C5r4e3a0t1e1d2B8y9SF');
+                                                foreach ($ihash as $uhash) {
+                                                    $algorithm = 'SHA512';
+                                                    $resource = mcrypt_module_open ( MCRYPT_DES , '' , MCRYPT_MODE_ECB , '/usr/lib/mcrypt-modes' );
+                                                    $size = mcrypt_enc_get_iv_size ($resource);
+                                                    $cryptvector = mcrypt_create_iv ($size, $uhash = MCRYPT_DEV_RANDOM);  /* the printed value would be a Random Value based on the Descryptor being used in order to Encrypt static string */
+                                                    $hashcode = hash($algorithm, $cryptvector, false)/* the printed value would be a HASH SHA512 concatenated to the Random Encrypted Value*/
+                                                    ;
+                                                    Mage::log('$hashcode: ######## ' . $hashcode);
+                                                }
+
+                                  if ($renewable_product->getRenewing()==880){
+                                                ?>
+                                                <a href="<?php echo $_renewableconcaturl.$renewable_product->getUrlPath().'/?'. $hashcode .'/?transitionintorenewalprocess=1'.'&&'.'realorderqtyrenewable='.$_renewablelist->getRealProdQtRestrain().'&&'.'realorderid='.$_renewablelist->getRealOrderId().'&&'.'7898723422='.$cryptvector.'&&'.'previousreprodordernumber='.$_renewablelist->getActualOrderNumber().'&&'.'renewingstate='.'renewing...'.'&&'.'prodkey='.$_renewablelist->getProdKey().'&&'.$hashcode;?>" class="link-reorder icons-reorder tiptip" title="<?php echo $this->__('Renew') ?>"><?php echo $this->__('Renew') ?></a>
+<?php }else{?>
+                                      <a href="<?php echo $_renewableconcaturl.$renewableconcaturl.$renewable_product->getUrlPath().'/?'. $hashcode .'/?transitionintorenewalprocess=1'.'&&'.'realorderqtyrenewable='.$_renewablelist->getRealProdQtRestrain().'&&'.'realorderid='.$_renewablelist->getRealOrderId().'&&'.'7898723422='.$cryptvector.'&&'.'previousreprodordernumber='.$_renewablelist->getActualOrderNumber().'&&'.'renewingstate='.'renewing...'.'&&'.'prodkey='.$_renewablelist->getProdKey().'&&'.$hashcode;?>" class="link-reorder icons-reorder tiptip" title="<?php echo $this->__('Renew') ?>"><?php echo $this->__('Renew') ?></a>
+                                      <?php }?>
+                                            </span>
+                                      </div>
+
+                                <?php }else if($_renewablelist->getProdKey() == ''){
+                                    echo '<b style="color: #FF0000;">Wait for Product Key / Serial # to be Assigned</b>';
+                                }else{ ?><div style="color: #FF0000; text-align:center; "><strong><?php echo $this->__('Wait 60 days prior to Renewal Date');?></strong></div>
+                                <?php  } ?>
+                        </td>
+                </tr>
+
+<?php
+  }
+}
+?>
+
+    </tbody>
+</table>
+<script type="text/javascript">decorateTable('my-orders-table');</script>
+<?php echo $this->getPagerHtml1(); ?>
+    <div class="buttons-set f-left">
+        <p class="back-link">
+            <a href="<?php echo Mage::getBaseUrl()?>/customer/account/"><small>&laquo;</small><?php echo $this->__('Back to Account Summary');?></a>
+        </p>
+    </div>
+<?php else: ?>
+    <p><?php echo $this->__('You have placed no orders.'); ?></p>
+<?php endif ?>

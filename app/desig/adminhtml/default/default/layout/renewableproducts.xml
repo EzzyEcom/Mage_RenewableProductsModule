@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+<!--
+/**
+ * Created by Saulo Ferreira.
+ * User: saulo.desousa
+ * Date: 4/28/14
+ * Time: 10:00 AM
+ * @version Admin Renewable Product List Control Panel
+ */
+-->
+
+    <renewableprod_adminhtml_renewableprodlist_index>
+        <reference name="content">
+            <!--<label>Renewables List</label>-->
+                <block type="renewableprod/renewableprodlist" name="renewableprod.renewableprodlist" template="renewableprod/renewablecustlist.phtml"/>
+        </reference>
+    </renewableprod_adminhtml_renewableprodlist_index>
+    <renewableprod_index_renewableprodfilter>
+        <reference name="content">
+            <block type="renewableprod/renewableprodfilter" name="renewableprod.renewableprodfilter" template="renewableprod/renewableprodfilter.phtml"/>
+        </reference>
+    </renewableprod_index_renewableprodfilter>
+    <renewableprod_index_renewableprodedit>
+        <reference name="content">
+            <block type="renewableprod/renewableprodlist" name="renewableprod.renewableprodlist" template="renewableprod/renewableprodedit.phtml" />
+            <!--<action method="addJs">-->
+                <!--<file>js/jquery-ui-1.10.4.custom/js/jquery-1.10.2.js</file>-->
+            <!--</action>-->
+            <!--<action method="addJs">-->
+                <!--<file>js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js</file>-->
+            <!--</action>-->
+            <!--</block>-->
+        </reference>
+    </renewableprod_index_renewableprodedit>
+</layout>

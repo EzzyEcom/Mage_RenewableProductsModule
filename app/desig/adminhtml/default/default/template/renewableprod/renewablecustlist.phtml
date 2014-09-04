@@ -1,0 +1,146 @@
+<?php
+/**
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2015 Grupo Censere
+ * @Author      Saulo Ferreira
+ * @Date        04/03/2014
+ */
+
+?>
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php $_renewableproductlist = $this->getRenewableCustList(); ?>
+<div class="box">
+
+    <div class="entry-edit">
+
+        <div class="entry-edit">
+
+
+            <div class="page-title">
+                <h1><?php echo 'Renewable Product - Customer List' ?></h1>
+            </div>
+            <div style="margin-bottom: 20px; float: right;">
+                <!--        --><?php //$custid = 'custid'?>
+                <!--        <button type="submit" title="--><?php //echo $this->__('Filter') ?><!--" class="button"><input style="width: 30%;" type="text" name="--><?php //echo $custid;?><!--" id="--><?php //echo $custid;?><!--" title="--><?php //echo $this->__('Filter by Customer ID') ?><!--" value="" /><span><span><a style="text-decoration: none; color: #ffffff;" href="--><?php //echo Mage::getBaseUrl().'renewableprod/index/renewableprodfilter/'.'?'.'custid='.$custid ?><!--">--><?php //echo $this->__('Filter') ?><!--</a></span></span></button>-->
+
+                <form action="<?php echo Mage::getStoreConfig(Mage_Core_Model_Store::XML_PATH_SECURE_BASE_URL).'renewableprod/index/renewableprodfilter'?>" method="get">
+                    <label for="custid"><?php echo $this->__('Filter by Customer ID') ?></label>
+                    <input style="width: 30%;" type="text" name="custid" id="custid" title="<?php echo $this->__('Filter by Customer ID') ?>" value="" />
+                    <input type="submit" title="<?php echo $this->__('Filter') ?>" value="<?php echo $this->__('Filter') ?>" />
+                </form>
+            </div>
+            <?php echo $this->getPagerHtmladmin(); ?>
+
+            <?php if($_renewableproductlist->getSize()): ?>
+                <table class="data-table" id="my-orders-table">
+
+                    <tbody>
+                    <?php $_odd = ''; ?>
+                    <?php foreach ($_renewableproductlist as $_renewablelist) { if ($_renewablelist->getActivestatefield() > 0){?>
+                        <?php
+                        $alert_yellow = 120;
+                        $alert_orange = 60;
+                        $alert_red = 30;
+                        $minimumdatevalueprior = 60;
+                        $fixeddate = strtotime(date('Y-m-d'));
+                        $datetoexpire = strtotime($_renewablelist->getRenewalDate());
+                        $dateresult = $datetoexpire - $fixeddate;
+                        $days_remaining = floor($dateresult / 86400);
+                        //                                $hours_remaining = floor(($dateresult % 86400) / 3600);
+                        Mage::log('This is the fixeddate: '.$fixeddate.'  This is the datetoexpire: '.$datetoexpire.'  This is the result from the Fixeddate - daystoexpire: '.$days_remaining.' Date to Subtract:'.$dateresult);
+                        ?>
+                        <?php
+                        $renewableprodid = $_renewablelist->getProdId();
+                        $renewableproductcollection = Mage::getModel('catalog/product')->load($renewableprodid);
+                        $renewable_product_url = $renewableproductcollection;
+                        ?>
+                        <thead>
+                        <tr>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('Trans#') ?></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('Order#') ?></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('Cust.ID#') ?></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('Cust.Name') ?></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('Prod.ID#') ?></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('Product Name') ?></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('Product Key#') ?></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('Renewal Date :') ?></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('Last Modified By:') ?></span></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('L.D.M.') ?></span></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px;"><?php echo $this->__('Days Left') ?></th>
+                            <th style="color: #000000; font-weight: bold; padding: 5px; float: right;"><?php echo $this->__('Edit') ?></th>
+                        </tr>
+                        </thead>
+                        <tr>
+                            <td style="padding: 5px;"><?php echo $_renewablelist->/*these are the actual table fields ->*/ getRealOrderId() ?></td>
+                            <td style="padding: 5px;"><?php echo $_renewablelist->/*these are the actual table fields ->*/ getActualOrderNumber() ?></td>
+                            <td style="padding: 5px;"><?php echo $_renewablelist->/*these are the actual table fields ->*/ getRealCustId() ?></td>
+                            <td style="padding: 5px;"><?php echo $_renewablelist->/*these are the actual table fields ->*/ getCustName() ?></span></td>
+                            <td style="padding: 5px;"><?php echo $_renewablelist-> /*these are the actual table fields ->*/ getProdId() ?></td>
+                            <td style="padding: 5px;"><?php echo $_renewablelist-> /*these are the actual table fields ->*/ getRealProdName() ? $this->htmlEscape($_renewablelist-> /*these are the actual table fields ->*/ getRealProdName()) : '&nbsp;' ?></td>
+                            <td style="padding: 5px;"><?php echo $_renewablelist-> /*these are the actual table fields ->*/ getProdKey() ?></td>
+                            <td style="padding: 5px;"><em><?php if ($_renewablelist->getRenewalDate() != '0000-00-00'){
+                                        /*
+                                         * This displays Renewal Date in the Client's Required Format i.e. = 01-Jan-2000
+                                         * */
+                                        echo date('d-M-Y', strtotime($_renewablelist->getRenewalDate()));
+                                        /*
+                                         * end
+                                         * */
+                                    }else{ ?><div style="color: #FF0000; text-align:center; "><strong><?php echo $this->__('Renewal Date yet to be Assigned');?></strong></div><?php }?></em>
+                                <div class="link-reorder tiptip" style="color:#000000; display:inline; border-radius:2px; padding:3px 10px 3px 10px; background-color:
+                                <?php
+                                if($days_remaining >= $alert_yellow){
+                                    Mage::log('Color '.$days_remaining);
+                                    echo $this->__('#009900;" title="Good"');
+                                }else if($days_remaining <= $alert_yellow && $days_remaining >= $alert_orange){
+                                    echo $this->__('#FFFF00;" title="Moderate"');
+                                }else if($days_remaining <= $alert_orange && $days_remaining >= $alert_red){
+                                    echo $this->__('#FF9900;" title="Needs Attention"');
+                                }else if($days_remaining <= $alert_red && $_renewablelist->getRenewalDate() != '0000-00-00' && $days_remaining != $alert_orange && $days_remaining != $alert_yellow){
+                                    echo $this->__('#FF3300;" title="Renewal Needed / Has been Deactivated"');
+                                }else{ echo 'none;"';}?> >
+
+                                    </div>
+                                    </td>
+                                    <td style="padding: 5px;"><?php echo $_renewablelist->/*these are the actual table fields ->*/ getModifiedbyName() ?></td>
+                            <td style="padding: 5px;"><?php echo $_renewablelist->/*these are the actual table fields ->*/ getLastDateModified(); ?></td>
+                            <td  style="padding: 5px;" class="a-center"><?php if($_renewablelist->getRenewalDate() != '0000-00-00'){?>
+                                <b style="color: #FF0000; font-size: 14pt;"><?php echo $days_remaining; ?></b>
+                            </td>
+                            <?php }else{ ?><div style="color: #FF0000; text-align:center; "><strong><?php echo $this->__('Days Unavailable');?></strong></div>
+                            <?php } ?>
+                            <td style="padding: 5px;">
+                                <!--                        <a href="--><?php //echo Mage::getBaseUrl().'renewableprod/index/renewableprodedit/'.'?'.'transidedit='.$_renewablelist->/*these are the actual table fields ->*/ getRealOrderId();?><!--" class="link-reorder icons-reorder tiptip" title="--><?php //echo $this->__('Edit') ?><!--">--><?php //echo $this->__('Edit') ?><!--</a>-->
+                                <form method="get" id="contactForm" action="<?php echo Mage::getStoreConfig(Mage_Core_Model_Store::XML_PATH_SECURE_BASE_URL).'renewableprod/index/renewableprodedit'?>">
+                                    <input type="hidden" name="transidedit" id="transidedit" value="<?php echo $_renewablelist->/*these are the actual table fields ->*/ getRealOrderId() ?>"/>
+                                    <div class="buttons-set">
+                                        <input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+                                        <button type="submit" title="<?php echo $this->__('Edit Owner/ Others') ?>" class="button"><span><span><?php echo $this->__('Edit Owner/ Others') ?></span></span></button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+
+                    <?php
+                    }
+                    }
+                    ?>
+
+                    </tbody>
+                </table>
+                <script type="text/javascript">decorateTable('my-orders-table');</script>
+                <?php echo $this->getPagerHtmladmin(); ?>
+
+            <?php endif ?>
+
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    var contactForm = new VarienForm('contactForm', true);
+    //]]>
+</script>

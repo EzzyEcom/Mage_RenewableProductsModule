@@ -32,5 +32,67 @@ o	Robust Renewable Product List that includes, Filter by Customer ID, Pagination
 
 o	Edit Input section allows all admins to Edit Data according to each product renewal aspects and expiration date, all fields are editable, but 2 that are reserved (Transaction#, Order#)
 
-Continues...
+![Renewable Products Edit Input, where site admins edit a renewanle product based on its vendor specs and expiration time frame.](https://raw.githubusercontent.com/sauloscf/Mage_RenewableProductsModule/master/readme_files/admineditinputchangespanel.png)
 
+Magento Version Compatibility
+-----------------------------
+
+The plugin has been tested in Magento EE 1.8 and higher. Support is not guaranteed for untested versions.
+
+Installation
+------------
+
+Clone the module using git clone --recursive git@github.com:sauloscf/Mage_RenewableProductsModule.git
+
+Or Download zip and replicate all files on each file’s particular directory.
+
+There is no custom installation for this plugin, just the default:
+
+	Now, go to >Catalogs>Attributes>Manage Attributes and add 2 new Attributes with the exact information below for each one. 
+
+The 2 new Attributes are:
+
+First One:
+
+    "renewing"
+    
+  !['renewing' attribute in order for the module to funcion correctly](https://raw.githubusercontent.com/sauloscf/Mage_RenewableProductsModule/master/readme_files/renewingaatributeset.png)
+  !['renewing' attribute configuration continues](https://raw.githubusercontent.com/sauloscf/Mage_RenewableProductsModule/master/readme_files/renewingaatributesetcontinue.png)
+  
+
+![Second Attribute must be created](https://raw.githubusercontent.com/sauloscf/Mage_RenewableProductsModule/master/readme_files/renewableaatributeset.png)
+![Second attribute configuration continues](https://raw.githubusercontent.com/sauloscf/Mage_RenewableProductsModule/master/readme_files/renewableaatributesetcontinue.png)
+
+	After you have created the Products Attributes, go to >Catalog>Attributes>Manage Attribute Sets
+    1.	Choose the Attribute Set to which you wish configuring products with the Renewable Products attribute.
+    2.	Create a New Group(which will show within each product configuration panel, since and when the product belongs to the Attribute set being now configured) called "Renewable"
+    3.	Drag and Drop the previously created Attributes to the new Attribute Set Group
+    
+ ![Attribute Sets must contain a new Attribute Group and Attributes added to it](https://raw.githubusercontent.com/sauloscf/Mage_RenewableProductsModule/master/readme_files/Renewableattributeset.png)
+![Adding previously created attributes under the newly created group which will show within Product Configuration](https://raw.githubusercontent.com/sauloscf/Mage_RenewableProductsModule/master/readme_files/Renewableattributesetaddingattribute.png)
+
+
+	Clear Magento Cache, and keep in mind that you have to use ‘Use Flat Catalog Category’ and ‘Use Flat Catalog Product’ under >System>Configuration>Catalog tab>Frontend ->Dropdown menu> SAVE, reindex if needed
+
+Inventory Notes
+---------------
+This version includes the following modules:
+    •	SF_RenewableProducts
+    
+License
+-------
+
+Developed by [SF-Dev](http://www.linkedin.com/in/sferrera/). Available with  [BSD 3-Clause "New" or "Revised" license](http://opensource.org/licenses/BSD-3-Clause)
+
+End
+
+Please feel free to contact me @ sf@sjwebs.coffeecup.com for any questions
+
+One final config for each renewable product with the special price, it is mandatory to have the following,
+
+  1. Duplicate all Original Products that you want to configure special prices to
+  2. As for the SKU, matain the original plus adding '-renewingproductonly' to the end of it
+  3. For the URL Key add to the begging 'renewableprod-renewing-' plus what the original url key is
+  4. on the Renewable tab within the Product configuration, Choose 'True' for Renewing and 'Yes' for Renewable
+   
+That is it, Good Luck, and please report any bugs, I'll try to get to them asap.  

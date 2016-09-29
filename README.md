@@ -1,7 +1,7 @@
 ![SF-Dev RenewableProducts Magento Plugin v4.1.0](https://raw.githubusercontent.com/sauloscf/Mage_RenewableProductsModule/master/readme_files/header.png)
 
 Renewable Products Magento Plugin v.4.1.0
-============================
+=============================
 
 This plugin is an official and stable version of the Renewable Products Magento extension. It bundles functionality to process Configurable Products renewals securely as well as send email notifications to your customers when they complete a successful purchase all in all allowing your end-users the ability to take advantage of the renewal special price previously setup by the site admin.
 
